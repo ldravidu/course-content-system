@@ -33,6 +33,7 @@ public class Course extends BaseEntity {
     @Column(length = 1000)
     private String description;
 
+    @NotBlank
     @Size(max = 20)
     @Column(length = 20)
     private String courseCode;
