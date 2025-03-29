@@ -1,0 +1,90 @@
+import axios from "axios";
+
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: "/api",
+  timeout: 30000, // 30 seconds timeout
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// Request interceptor for adding the auth token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
+// Response interceptor to handle common errors
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Handle 401 Unauthorized errors (token expired)
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  },
+);
+
+// Auth API
+export const authAPI = {
+  login: (credentials) => api.post("/auth/login", credentials),
+  register: (userData) => api.post("/auth/register", userData),
+  getCurrentUser: () => api.get("/users/me"),
+};
+
+// Course API
+export const courseAPI = {
+  getAllCourses: (params) => api.get("/courses", { params }),
+  getCourseById: (id) => api.get(`/courses/${id}`),
+  createCourse: (courseData) => api.post("/courses", courseData),
+  updateCourse: (id, courseData) => api.put(`/courses/${id}`, courseData),
+  deleteCourse: (id) => api.delete(`/courses/${id}`),
+  getCourseContent: (id) => api.get(`/courses/${id}/content`),
+};
+
+// Content API
+export const contentAPI = {
+  getAllContent: (params) => api.get("/content", { params }),
+  getContentById: (id) => api.get(`/content/${id}`),
+  uploadContent: (contentData) => {
+    const formData = new FormData();
+
+    // Append file to form data
+    formData.append("file", contentData.file);
+
+    // Append other metadata as JSON
+    const metadata = {
+      title: contentData.title,
+      description: contentData.description,
+      courseId: contentData.courseId,
+    };
+    formData.append("metadata", JSON.stringify(metadata));
+
+    return api.post("/content", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
+  updateContent: (id, contentData) => api.put(`/content/${id}`, contentData),
+  deleteContent: (id) => api.delete(`/content/${id}`),
+  downloadContent: (id) =>
+    api.get(`/content/${id}/file`, { responseType: "blob" }),
+  searchContent: (searchParams) =>
+    api.get("/content/search", { params: searchParams }),
+};
+
+export default api;
