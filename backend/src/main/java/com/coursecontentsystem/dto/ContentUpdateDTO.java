@@ -2,6 +2,7 @@ package com.coursecontentsystem.dto;
 
 import com.coursecontentsystem.model.ContentStatus;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class ContentUpdateDTO {
     @Size(max = 1000, message = "Description cannot exceed 1000 characters")
     private String description;
 
+    @NotNull(message = "Course ID is required")
     private Long courseId;
     private ContentStatus status;
     private Integer displayOrder;

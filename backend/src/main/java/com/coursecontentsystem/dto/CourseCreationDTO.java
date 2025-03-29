@@ -2,9 +2,9 @@ package com.coursecontentsystem.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class CourseCreationDTO {
     @NotBlank(message = "Title is required")
     @Size(max = 100, message = "Title cannot exceed 100 characters")

@@ -3,11 +3,14 @@ package com.coursecontentsystem.dto;
 import com.coursecontentsystem.model.ContentStatus;
 import com.coursecontentsystem.model.FileType;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
+import java.time.LocalDateTime;
+
 @Data
-public class ContentDTO extends BaseDTO {
+public class ContentDTO {
+    private Long id;
+    private LocalDateTime createdAt;
+    private Long version;
     private String title;
     private String description;
     private String filePath;
@@ -21,6 +24,5 @@ public class ContentDTO extends BaseDTO {
     private String uploadedByName;
     private ContentStatus status;
     private Integer displayOrder;
-
     private String contentUrl;
 }

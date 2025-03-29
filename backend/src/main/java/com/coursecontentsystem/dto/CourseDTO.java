@@ -2,11 +2,14 @@ package com.coursecontentsystem.dto;
 
 import com.coursecontentsystem.model.CourseStatus;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
+import java.time.LocalDateTime;
+
 @Data
-public class CourseDTO extends BaseDTO {
+public class CourseDTO {
+    private Long id;
+    private LocalDateTime createdAt;
+    private Long version;
     private String title;
     private String description;
     private String courseCode;
