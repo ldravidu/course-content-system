@@ -70,18 +70,6 @@ public class Content extends BaseEntity {
     // Optional order within the course (for sequencing content)
     private Integer displayOrder;
 
-    // File type enum
-    public enum FileType {
-        PDF, VIDEO, IMAGE
-    }
-
-    // Content status enum
-    public enum ContentStatus {
-        ACTIVE, // Content is available for viewing
-        DRAFT, // Content is being prepared, not yet available
-        ARCHIVED // Content is no longer available but preserved
-    }
-
     @Override
     public String toString() {
         return "Content{" +

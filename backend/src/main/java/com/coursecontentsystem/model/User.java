@@ -53,7 +53,7 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private UserRole role;
 
     // Bidirectional relationship with Course (Instructor relation)
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
@@ -67,13 +67,6 @@ public class User extends BaseEntity {
     // One-to-many relationship with Content (files uploaded by this user)
     @OneToMany(mappedBy = "uploadedBy", cascade = CascadeType.ALL)
     private Set<Content> uploadedContents = new HashSet<>();
-
-    // User role enum
-    public enum Role {
-        ROLE_STUDENT,
-        ROLE_INSTRUCTOR,
-        ROLE_ADMIN
-    }
 
     // Helper method to add a course that this user instructs
     public void addInstructCourse(Course course) {

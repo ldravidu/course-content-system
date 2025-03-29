@@ -54,13 +54,6 @@ public class Course extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private CourseStatus status = CourseStatus.DRAFT;
 
-    // Course status enum
-    public enum CourseStatus {
-        DRAFT, // Course is being created, not visible to students
-        PUBLISHED, // Course is active and visible to students
-        ARCHIVED // Course is no longer active but preserved for reference
-    }
-
     // Helper method to add a content item to this course
     public void addContent(Content content) {
         contentItems.add(content);
