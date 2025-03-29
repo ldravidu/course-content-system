@@ -2,6 +2,8 @@ package com.coursecontentsystem.service;
 
 import com.coursecontentsystem.dto.UserCreationDTO;
 import com.coursecontentsystem.dto.UserDTO;
+import com.coursecontentsystem.dto.UserUpdateDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,7 +16,7 @@ public interface UserService {
 
     Page<UserDTO> getAllUsers(Pageable pageable);
 
-    UserDTO updateUser(Long id, UserCreationDTO userUpdateDTO);
+    UserDTO updateUser(Long id, UserUpdateDTO userUpdateDTO);
 
     void deleteUser(Long id);
 

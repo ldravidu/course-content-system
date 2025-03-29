@@ -2,6 +2,7 @@ package com.coursecontentsystem.service.impl;
 
 import com.coursecontentsystem.dto.UserCreationDTO;
 import com.coursecontentsystem.dto.UserDTO;
+import com.coursecontentsystem.dto.UserUpdateDTO;
 import com.coursecontentsystem.mapper.UserMapper;
 import com.coursecontentsystem.model.User;
 import com.coursecontentsystem.repository.UserRepository;
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(Long id, UserCreationDTO dto) {
+    public UserDTO updateUser(Long id, UserUpdateDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
 

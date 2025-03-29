@@ -29,5 +29,6 @@ public interface CourseMapper {
     @Mapping(target = "instructor", ignore = true)
     @Mapping(target = "enrolledStudents", ignore = true)
     @Mapping(target = "contentItems", ignore = true)
+    @Mapping(target = "status", ignore = true)
     void updateEntity(@MappingTarget Course course, CourseCreationDTO courseCreationDTO);
 }
