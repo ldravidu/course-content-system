@@ -4,33 +4,28 @@ import { useAuth } from "../../hooks/useAuth";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { user, logout } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-    setIsMenuOpen(false);
-  };
-
-  useEffect(() => {
-    if (user !== null) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [user]);
+  const NavLink = ({ to, children }) => (
+    <Link
+      to={to}
+      className="text-white/90 hover:text-white transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-white/10"
+    >
+      {children}
+    </Link>
+  );
 
   return (
-    <header className="bg-blue-600 text-white shadow-md">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
-          <Link to="/" className="text-xl font-bold">
+    <header className="bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="flex justify-between items-center h-16">
+          <Link to="/" className="text-xl font-bold tracking-tight">
             Course Content System
           </Link>
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden"
+            className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <svg
@@ -50,91 +45,41 @@ function Header() {
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:block">
-            <ul className="flex space-x-8">
-              <li>
-                <Link to="/" className="hover:text-blue-200 transition-colors">
-                  Home
-                </Link>
-              </li>
-              {isLoggedIn ? (
-                <>
-                  <li>
-                    <Link
-                      to="/courses"
-                      className="hover:text-blue-200 transition-colors"
-                    >
-                      Courses
-                    </Link>
-                  </li>
-                  <li>
-                    <button
-                      onClick={handleLogout}
-                      className="hover:text-blue-200 transition-colors"
-                    >
-                      Logout
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <li>
-                  <Link
-                    to="/login"
-                    className="hover:text-blue-200 transition-colors"
-                  >
-                    Login
-                  </Link>
-                </li>
-              )}
-            </ul>
+          <nav className="hidden md:flex items-center space-x-2">
+            <NavLink to="/">Home</NavLink>
+            {user ? (
+              <>
+                <NavLink to="/courses">Courses</NavLink>
+                <button
+                  onClick={logout}
+                  className="text-white/90 hover:text-white transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-white/10"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <NavLink to="/login">Login</NavLink>
+            )}
           </nav>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden pb-4">
-            <ul className="flex flex-col space-y-2">
-              <li>
-                <Link
-                  to="/"
-                  className="block py-2 hover:text-blue-200"
-                  onClick={() => setIsMenuOpen(false)}
+          <nav className="md:hidden py-4 space-y-1">
+            <NavLink to="/">Home</NavLink>
+            {user ? (
+              <>
+                <NavLink to="/courses">Courses</NavLink>
+                <button
+                  onClick={logout}
+                  className="block w-full text-left text-white/90 hover:text-white transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-white/10"
                 >
-                  Home
-                </Link>
-              </li>
-              {isLoggedIn ? (
-                <>
-                  <li>
-                    <Link
-                      to="/courses"
-                      className="block py-2 hover:text-blue-200"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Courses
-                    </Link>
-                  </li>
-                  <li>
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left py-2 hover:text-blue-200"
-                    >
-                      Logout
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <li>
-                  <Link
-                    to="/login"
-                    className="block py-2 hover:text-blue-200"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                </li>
-              )}
-            </ul>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <NavLink to="/login">Login</NavLink>
+            )}
           </nav>
         )}
       </div>

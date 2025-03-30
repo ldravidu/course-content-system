@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Button from "../components/common/Button";
+import CourseCard from "../components/courses/CourseCard";
+import Loading from "../components/common/Loading";
+import Error from "../components/common/Error";
+import EmptyState from "../components/common/EmptyState";
 
 function CoursesPage() {
   const [courses, setCourses] = useState([]);
@@ -38,72 +43,28 @@ function CoursesPage() {
   }, []);
 
   if (error) {
-    return (
-      <div className="text-center py-10 text-red-600">
-        Error: {error.message}
-      </div>
-    );
+    return <Error message={error.message} />;
   }
 
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Courses</h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
-          Add New Course
-        </button>
+        <Button variant="primary">Add New Course</Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
-          <div className="mx-auto w-full max-w rounded-lg shadow-md p-6 bg-white">
-            <div className="flex animate-pulse space-x-4">
-              <div className="flex-1 space-y-4 py-4">
-                <div className="space-y-6">
-                  <div className="grid grid-cols-5 gap-4 items-center mb-6">
-                    <div className="size-10 rounded-full bg-gray-200"></div>
-                    <div className="col-span-4 h-2 rounded bg-gray-200"></div>
-                  </div>
-                </div>
-                <div className="h-2 rounded bg-gray-200"></div>
-                <div className="h-2 rounded bg-gray-200"></div>
-                <div className="h-2 rounded bg-gray-200"></div>
-                <div className="space-y-6">
-                  <div className="grid grid-cols-5 gap-4 mt-8">
-                    <div className="col-span-4 h-2 rounded bg-gray-200"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Loading text="Loading courses..." />
         ) : (
           courses.map((course) => (
-            <div
-              key={course.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-            >
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2">{course.title}</h2>
-                <p className="text-gray-600 mb-4">{course.description}</p>
-                <p className="text-sm text-gray-500 mb-4">
-                  Instructor: {course.instructor}
-                </p>
-                <Link
-                  to={`/courses/${course.id}`}
-                  className="text-blue-600 hover:underline block text-center"
-                >
-                  View Course Details
-                </Link>
-              </div>
-            </div>
+            <CourseCard key={course.id} course={course} />
           ))
         )}
       </div>
 
       {courses.length === 0 && !loading && (
-        <div className="text-center py-10 text-gray-500">
-          No courses available.
-        </div>
+        <EmptyState message="No courses available." />
       )}
     </div>
   );
