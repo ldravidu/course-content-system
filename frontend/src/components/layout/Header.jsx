@@ -47,7 +47,7 @@ function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-2">
             <NavLink to="/">Home</NavLink>
-            {user ? (
+            {user !== null ? (
               <>
                 <NavLink to="/courses">Courses</NavLink>
                 <button
@@ -67,7 +67,7 @@ function Header() {
         {isMenuOpen && (
           <nav className="md:hidden py-4 space-y-1">
             <NavLink to="/">Home</NavLink>
-            {user ? (
+            {user !== null ? (
               <>
                 <NavLink to="/courses">Courses</NavLink>
                 <button

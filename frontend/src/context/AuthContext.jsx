@@ -34,10 +34,7 @@ export function AuthProvider({ children }) {
 
   const register = async (userData) => {
     const response = await authAPI.register(userData);
-    const { token, user } = response.data;
-    localStorage.setItem("token", token);
-    setUser(user);
-    return user;
+    return response.data; // Just return the user data, don't set token or user state
   };
 
   const logout = () => {

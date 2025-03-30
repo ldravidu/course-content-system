@@ -32,6 +32,14 @@ function SignUpPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const mapRole = (role) => {
+    const roleMap = {
+      student: "ROLE_STUDENT",
+      instructor: "ROLE_INSTRUCTOR",
+    };
+    return roleMap[role] || roleMap.student;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -49,9 +57,9 @@ function SignUpPage() {
         email: formData.email,
         username: formData.username,
         password: formData.password,
-        role: formData.role,
+        role: mapRole(formData.role),
       });
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       console.error("Registration error:", err);
       setError(err.response?.data?.message || "Registration failed");
@@ -66,8 +74,29 @@ function SignUpPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-16">
+    <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-8">
+        <div className="flex items-center justify-center mb-6">
+          <Link
+            to="/signup"
+            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900"
+          >
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Change Role
+          </Link>
+        </div>
         <h1 className="text-4xl font-bold text-gray-900 tracking-tight">
           Create Your Account
         </h1>
@@ -77,8 +106,8 @@ function SignUpPage() {
         </p>
       </div>
 
-      <Card className="backdrop-blur-sm bg-white/80 shadow-xl border-0">
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <Card className="backdrop-blur-sm bg-white/80 shadow-xl border-0 px-6 py-8 sm:px-8">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Input
               label="First Name"
@@ -227,7 +256,7 @@ function SignUpPage() {
           </div>
 
           {error && (
-            <div className="text-red-600 text-center bg-red-50 rounded-lg p-3 text-sm">
+            <div className="text-red-600 text-center bg-red-50 rounded-lg p-4 text-sm">
               {error}
             </div>
           )}
@@ -235,7 +264,7 @@ function SignUpPage() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full py-3 transform hover:scale-[1.02]"
+            className="w-full py-3.5 text-base font-medium"
           >
             {loading ? (
               <span className="flex items-center justify-center">
@@ -268,15 +297,8 @@ function SignUpPage() {
 
         <div className="mt-8 pt-6 border-t border-gray-200 text-center">
           <Link
-            to="/signup"
-            className="text-blue-600 hover:text-blue-800 font-medium transition-colors mr-4"
-          >
-            ← Change Role
-          </Link>
-          <span className="text-gray-300">|</span>
-          <Link
             to="/login"
-            className="text-blue-600 hover:text-blue-800 font-medium transition-colors ml-4"
+            className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
           >
             Already have an account? Log in
           </Link>

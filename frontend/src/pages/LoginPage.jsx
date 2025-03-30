@@ -111,11 +111,7 @@ function LoginPage() {
             </div>
           )}
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 transform hover:scale-[1.02]"
-          >
+          <Button type="submit" disabled={loading} className="w-full py-3">
             {loading ? (
               <span className="flex items-center justify-center">
                 <svg

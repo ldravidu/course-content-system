@@ -23,7 +23,7 @@ function Button({
       disabled={disabled}
       onClick={onClick}
       className={`${baseStyles} ${variants[variant]} ${className} ${
-        disabled ? "cursor-not-allowed opacity-75" : "hover:-translate-y-0.5"
+        disabled ? "cursor-not-allowed opacity-75" : ""
       }`}
     >
       {children}
