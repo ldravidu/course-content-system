@@ -56,21 +56,21 @@ function CoursesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
-          <div class="mx-auto w-full max-w rounded-lg shadow-md p-6 bg-white">
-            <div class="flex animate-pulse space-x-4">
-              <div class="flex-1 space-y-4 py-4">
-                <div class="space-y-6">
-                  <div class="grid grid-cols-5 gap-4 items-center mb-6">
-                    <div class="size-10 rounded-full bg-gray-200"></div>
-                    <div class="col-span-4 h-2 rounded bg-gray-200"></div>
+          <div className="mx-auto w-full max-w rounded-lg shadow-md p-6 bg-white">
+            <div className="flex animate-pulse space-x-4">
+              <div className="flex-1 space-y-4 py-4">
+                <div className="space-y-6">
+                  <div className="grid grid-cols-5 gap-4 items-center mb-6">
+                    <div className="size-10 rounded-full bg-gray-200"></div>
+                    <div className="col-span-4 h-2 rounded bg-gray-200"></div>
                   </div>
                 </div>
-                <div class="h-2 rounded bg-gray-200"></div>
-                <div class="h-2 rounded bg-gray-200"></div>
-                <div class="h-2 rounded bg-gray-200"></div>
-                <div class="space-y-6">
-                  <div class="grid grid-cols-5 gap-4 mt-8">
-                    <div class="col-span-4 h-2 rounded bg-gray-200"></div>
+                <div className="h-2 rounded bg-gray-200"></div>
+                <div className="h-2 rounded bg-gray-200"></div>
+                <div className="h-2 rounded bg-gray-200"></div>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-5 gap-4 mt-8">
+                    <div className="col-span-4 h-2 rounded bg-gray-200"></div>
                   </div>
                 </div>
               </div>
