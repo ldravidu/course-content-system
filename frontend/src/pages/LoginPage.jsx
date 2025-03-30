@@ -18,8 +18,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (user !== null) {
-      const from = location.state?.from?.pathname || "/";
-      navigate(from, { replace: true });
+      navigate("/");
     }
   }, [user, navigate, location]);
 
