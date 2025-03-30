@@ -2,8 +2,8 @@ import axios from "axios";
 
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: "/api",
-  timeout: 30000, // 30 seconds timeout
+  baseURL: import.meta.env.VITE_API_BASE_URL || "/api",
+  timeout: Number(import.meta.env.VITE_API_TIMEOUT) || 30000, // configurable API timeout in ms
   headers: {
     "Content-Type": "application/json",
   },
@@ -30,7 +30,11 @@ api.interceptors.response.use(
   },
   (error) => {
     // Handle 401 Unauthorized errors (token expired)
-    if (error.response && error.response.status === 401) {
+    if (
+      (error.response && error.response.status === 401) ||
+      error.response.status === 403
+    ) {
+      console.error("Authentication error:", error);
       localStorage.removeItem("token");
       window.location.href = "/login";
     }
@@ -41,7 +45,7 @@ api.interceptors.response.use(
 // Auth API
 export const authAPI = {
   login: (credentials) => api.post("/auth/login", credentials),
-  register: (userData) => api.post("/auth/register", userData),
+  register: (userData) => api.post("/auth/register", userData), // userData now includes role
   getCurrentUser: () => api.get("/users/me"),
 };
 
@@ -62,8 +66,10 @@ export const contentAPI = {
   uploadContent: (contentData) => {
     const formData = new FormData();
 
-    // Append file to form data
-    formData.append("file", contentData.file);
+    // Append file to form data if it exists
+    if (contentData.file && contentData) {
+      formData.append("file", contentData.file);
+    }
 
     // Append other metadata as JSON
     const metadata = {
