@@ -57,7 +57,8 @@ export const courseAPI = {
   createCourse: (courseData) => api.post("/courses", courseData),
   updateCourse: (id, courseData) => api.put(`/courses/${id}`, courseData),
   deleteCourse: (id) => api.delete(`/courses/${id}`),
-  getCourseContent: (id) => api.get(`/courses/${id}/content`),
+  getCourseContent: (id, params) =>
+    api.get(`/courses/${id}/content`, { params }),
 };
 
 // Content API
