@@ -5,45 +5,45 @@ import CourseCard from "../components/courses/CourseCard";
 import Loading from "../components/common/Loading";
 import Error from "../components/common/Error";
 import EmptyState from "../components/common/EmptyState";
+import { courseAPI } from "../services/api";
 
 function CoursesPage() {
   const [courses, setCourses] = useState([]);
+  const [pagination, setPagination] = useState({
+    totalPages: 0,
+    totalElements: 0,
+    currentPage: 0,
+    pageSize: 20,
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // For now, mock data is used
   useEffect(() => {
-    // This would be replaced with an actual API call
-    const mockCourses = [
-      {
-        id: 1,
-        title: "Introduction to React",
-        description: "Learn the basics of React",
-        instructor: "Jane Doe",
-      },
-      {
-        id: 2,
-        title: "Advanced Spring Boot",
-        description: "Master Spring Boot development",
-        instructor: "John Smith",
-      },
-      {
-        id: 3,
-        title: "Database Design",
-        description: "Learn how to design efficient databases",
-        instructor: "Alice Johnson",
-      },
-    ];
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const response = await courseAPI.getAllCourses();
+        setCourses(response.data.content || []);
+        setPagination({
+          totalPages: response.data.totalPages,
+          totalElements: response.data.totalElements,
+          currentPage: response.data.number,
+          pageSize: response.data.size,
+        });
+        console.debug("Fetched courses:", response.data);
+      } catch (err) {
+        console.error("Error fetching courses:", err);
+        setError(err.response?.data?.message || "Failed to load courses");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Simulate API request
-    setTimeout(() => {
-      setCourses(mockCourses);
-      setLoading(false);
-    }, 800);
+    fetchCourses();
   }, []);
 
   if (error) {
-    return <Error message={error.message} />;
+    return <Error message={error} />;
   }
 
   return (

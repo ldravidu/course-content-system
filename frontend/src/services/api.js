@@ -19,6 +19,7 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error("Request error:", error);
     return Promise.reject(error);
   },
 );
@@ -45,7 +46,7 @@ api.interceptors.response.use(
 // Auth API
 export const authAPI = {
   login: (credentials) => api.post("/auth/login", credentials),
-  register: (userData) => api.post("/auth/register", userData), // userData now includes role
+  register: (userData) => api.post("/auth/register", userData),
   getCurrentUser: () => api.get("/users/me"),
 };
 
