@@ -6,6 +6,7 @@ import ContentItem from "../components/content/ContentItem";
 import Loading from "../components/common/Loading";
 import Error from "../components/common/Error";
 import EmptyState from "../components/common/EmptyState";
+import ContentUploadModal from "../components/courses/ContentUploadModal";
 import { courseAPI, contentAPI } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
 
@@ -22,6 +23,8 @@ function CourseDetailPage() {
     currentPage: 0,
     pageSize: 20,
   });
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const fetchContent = async (page = 0) => {
     try {
@@ -87,6 +90,16 @@ function CourseDetailPage() {
     fetchContent(newPage);
   };
 
+  const handleUpload = async (formData) => {
+    setIsUploading(true);
+    try {
+      await contentAPI.uploadContent(formData);
+      await fetchContent(0); // Refresh content list
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   if (loading) {
     return <Loading text="Loading course details..." />;
   }
@@ -116,11 +129,20 @@ function CourseDetailPage() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Course Content</h2>
         {isInstructor && (
-          <Link to={`/courses/${courseId}/upload`}>
-            <Button variant="primary">Upload New Content</Button>
-          </Link>
+          <Button variant="primary" onClick={() => setIsUploadModalOpen(true)}>
+            Upload New Content
+          </Button>
         )}
       </div>
+
+      {isUploadModalOpen && (
+        <ContentUploadModal
+          courseId={courseId}
+          onClose={() => setIsUploadModalOpen(false)}
+          onSubmit={handleUpload}
+          isUploading={isUploading}
+        />
+      )}
 
       {content.length === 0 ? (
         <Card className="text-center py-10">

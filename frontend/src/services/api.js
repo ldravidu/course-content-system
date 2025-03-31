@@ -16,6 +16,14 @@ api.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
+    // Add debug logging
+    console.debug("API Request:", {
+      method: config.method?.toUpperCase(),
+      url: config.baseURL + config.url,
+      data: config.data,
+      params: config.params,
+      headers: config.headers,
+    });
     return config;
   },
   (error) => {
@@ -65,22 +73,9 @@ export const courseAPI = {
 export const contentAPI = {
   getAllContent: (params) => api.get("/content", { params }),
   getContentById: (id) => api.get(`/content/${id}`),
-  uploadContent: (contentData) => {
-    const formData = new FormData();
-
-    // Append file to form data if it exists
-    if (contentData.file && contentData) {
-      formData.append("file", contentData.file);
-    }
-
-    // Append other metadata as JSON
-    const metadata = {
-      title: contentData.title,
-      description: contentData.description,
-      courseId: contentData.courseId,
-    };
-    formData.append("metadata", JSON.stringify(metadata));
-
+  uploadContent: (formData) => {
+    console.debug("Uploading content:", formData);
+    // console.debug("formdata.content", formData.get("content"));
     return api.post("/content", formData, {
       headers: {
         "Content-Type": "multipart/form-data",

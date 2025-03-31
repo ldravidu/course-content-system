@@ -7,7 +7,6 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import CoursesPage from "./pages/CoursesPage";
 import CourseDetailPage from "./pages/CourseDetailPage";
-import ContentUploadPage from "./pages/ContentUploadPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./components/common/ProtectedRoute";
 import RoleSelectionPage from "./pages/RoleSelectionPage";
@@ -38,14 +37,6 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CourseDetailPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="courses/:courseId/upload"
-              element={
-                <ProtectedRoute>
-                  <ContentUploadPage />
                 </ProtectedRoute>
               }
             />
