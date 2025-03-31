@@ -4,10 +4,14 @@ import Card from "../common/Card";
 function CourseCard({ course }) {
   return (
     <Card>
-      <h2 className="text-xl font-semibold mb-2">{course.title}</h2>
+      <h2 className="text-xl font-semibold mb-2">
+        {course.courseCode}
+        {": "}
+        {course.title}
+      </h2>
       <p className="text-gray-600 mb-4">{course.description}</p>
       <p className="text-sm text-gray-500 mb-4">
-        Instructor: {course.instructor}
+        Instructor: {course.instructorName}
       </p>
       <Link
         to={`/courses/${course.id}`}

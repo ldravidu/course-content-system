@@ -8,7 +8,21 @@ function Input({
   error,
   className = "",
   icon,
+  component = "input",
+  ...props
 }) {
+  const inputClasses = `
+    w-full
+    ${icon ? "pl-10" : "px-4"} py-2
+    bg-white
+    border border-gray-200
+    rounded-lg
+    transition-all duration-200
+    focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
+    placeholder-gray-400
+    ${error ? "border-red-500 focus:ring-red-500/20 focus:border-red-500" : ""}
+  `;
+
   return (
     <div className={`mb-4 ${className}`}>
       {label && (
@@ -22,28 +36,26 @@ function Input({
             {icon}
           </div>
         )}
-        <input
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          required={required}
-          className={`
-            w-full
-            ${icon ? "pl-10" : "px-4"} py-2
-            bg-white
-            border border-gray-200
-            rounded-lg
-            transition-all duration-200
-            focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
-            placeholder-gray-400
-            ${
-              error
-                ? "border-red-500 focus:ring-red-500/20 focus:border-red-500"
-                : ""
-            }
-          `}
-        />
+        {component === "textarea" ? (
+          <textarea
+            name={name}
+            value={value}
+            onChange={onChange}
+            required={required}
+            className={inputClasses}
+            {...props}
+          />
+        ) : (
+          <input
+            type={type}
+            name={name}
+            value={value}
+            onChange={onChange}
+            required={required}
+            className={inputClasses}
+            {...props}
+          />
+        )}
       </div>
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>

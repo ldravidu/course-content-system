@@ -19,6 +19,7 @@ export function AuthProvider({ children }) {
         setUser(response.data);
       } catch (error) {
         localStorage.removeItem("token");
+        console.error("Error checking auth:", error);
       }
     }
     setLoading(false);
