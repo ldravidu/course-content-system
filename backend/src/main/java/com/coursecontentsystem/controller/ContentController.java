@@ -53,6 +53,9 @@ public class ContentController {
                 .contentType(MediaType.parseMediaType(content.getContentType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + content.getOriginalFilename() + "\"")
+                .header(HttpHeaders.CACHE_CONTROL, "no-cache, no-store, must-revalidate")
+                .header(HttpHeaders.PRAGMA, "no-cache")
+                .header(HttpHeaders.EXPIRES, "0")
                 .body(resource);
     }
 

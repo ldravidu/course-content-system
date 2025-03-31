@@ -70,19 +70,34 @@ function CourseDetailPage() {
   const handleDownload = async (contentItem) => {
     try {
       const response = await contentAPI.downloadContent(contentItem.id);
-      // Create a blob from the response data
-      const blob = new Blob([response.data]);
+      const blob = new Blob([response.data], {
+        type: response.headers["content-type"],
+      });
+      const fileName =
+        contentItem.originalFilename ||
+        `${contentItem.title}.${contentItem.fileType.toLowerCase()}`;
+
+      // For modern browsers
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, fileName);
+        return;
+      }
+
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", contentItem.title);
+      link.download = fileName;
+      link.style.display = "none";
       document.body.appendChild(link);
       link.click();
-      link.remove();
       window.URL.revokeObjectURL(url);
+      link.remove();
     } catch (err) {
       console.error("Error downloading content:", err);
-      // TODO: show error message
+      // Show error message to user
+      setError(
+        `Failed to download file: ${err.message || "Unknown error occurred"}`,
+      );
     }
   };
 
