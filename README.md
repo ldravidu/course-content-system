@@ -1,42 +1,63 @@
 # Course Content Management System
 
-A comprehensive system for managing and delivering course content, designed for educational institutions and online learning platforms.
+A comprehensive course content management system for educational institutions, featuring secure file storage, role-based access control, and an intuitive React frontend.
 
 ## Features
 
-- Upload and manage various content types (PDFs, videos, images)
-- Organize content by courses
-- User management with role-based access control
-- RESTful API for content retrieval
-- Modern React frontend for intuitive content management
+- Advanced content management with support for multiple file types:
+  - Documents (PDF)
+  - Videos (MP4)
+  - Images (JPG, JPEG, PNG)
+- Structured course organization with status tracking (Draft, Published, Archived)
+- Role-based access control (Student, Instructor, Admin)
+- Secure file storage with unique identifiers
+- Responsive React frontend with real-time updates
+- RESTful API with JWT authentication
+- Paginated content listing and efficient file streaming
 
 ## Project Structure
 
-This repository is organized as a monorepo containing both frontend and backend code:
-
-- `frontend/`: React application
-- `backend/`: Spring Boot application
-- `docs/`: Project documentation
-- `.github/`: GitHub workflows and templates
+```
+course-content-manager/
+├── backend/                 # Spring Boot application
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/      # Java source files
+│   │   │   └── resources/ # Application properties
+│   │   └── test/          # Test files
+│   ├── uploads/           # Content storage directory
+│   ├── pom.xml           # Maven configuration
+│   └── Dockerfile        # Backend containerization
+├── frontend/              # React application
+│   ├── src/
+│   │   ├── components/   # Reusable React components
+│   │   ├── pages/       # Page components
+│   │   └── services/    # API integration
+│   ├── package.json     # NPM dependencies
+│   └── Dockerfile       # Frontend containerization
+└── docs/                # Documentation
+```
 
 ## Technology Stack
 
 ### Backend
 
 - Java 17
-- Spring Boot 3.x
+- Spring Boot 3.4.4
+- Spring Security with JWT
 - Spring Data JPA
-- Spring Security
-- Embedded PostgreSQL
-- Maven
+- PostgreSQL Database
+- MapStruct for DTO mapping
+- Lombok for boilerplate reduction
+- Embedded PostgreSQL for testing
 
 ### Frontend
 
-- React 18
-- React Router
-- Axios
-- Bootstrap/Material UI (TBD)
-- NPM/Yarn
+- React 19
+- React Router v7
+- Axios for API communication
+- Tailwind CSS for styling
+- Vite for build tooling
 
 ## Getting Started
 
@@ -44,43 +65,81 @@ This repository is organized as a monorepo containing both frontend and backend 
 
 - Java 17 or higher
 - Node.js 16 or higher
+- PostgreSQL 13 or higher
 - Maven 3.6 or higher
-- Git
 
 ### Development Setup
 
 1. Clone the repository
 
-   ```
-   git clone https://github.com/yourusername/course-content-system.git
-   cd course-content-system
+   ```bash
+   git clone https://github.com/yourusername/course-content-manager.git
+   cd course-content-manager
    ```
 
-2. Start the backend
+2. Configure the database
 
+   ```properties
+   # Update backend/src/main/resources/application.properties
+   spring.datasource.url=jdbc:postgresql://localhost:5432/courses_db
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
    ```
+
+3. Start the backend
+
+   ```bash
    cd backend
    mvn spring-boot:run
    ```
 
-3. Start the frontend
+4. Start the frontend
 
-   ```
+   ```bash
    cd frontend
    npm install
-   npm start
+   npm run dev
    ```
 
-4. Access the application at `http://localhost:3000`
+5. Access the application at `http://localhost:5173`
 
 ## API Documentation
 
-API documentation will be available at `/docs/api` once the project is further developed.
+### Authentication
+
+- POST `/api/auth/login`: User authentication
+- POST `/api/auth/register`: User registration
+
+### Content Management
+
+- GET `/api/content`: List all content (paginated)
+- POST `/api/content`: Upload new content (multipart/form-data)
+- GET `/api/content/{id}`: Get content metadata
+- GET `/api/content/{id}/file`: Download content file
+- PUT `/api/content/{id}`: Update content metadata
+- DELETE `/api/content/{id}`: Delete content
+
+### Course Management
+
+- GET `/api/courses`: List all courses (paginated)
+- POST `/api/courses`: Create new course
+- GET `/api/courses/{id}`: Get course details
+- PUT `/api/courses/{id}`: Update course
+- DELETE `/api/courses/{id}`: Delete course
+- GET `/api/courses/{id}/content`: List course content
 
 ## Contributing
 
-Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Authors
+
+- Ravidu Liyanage - _Initial work_
