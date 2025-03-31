@@ -1,4 +1,4 @@
-FROM maven:3.9-eclipse-temurin-17 AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
@@ -13,18 +13,24 @@ COPY src/ ./src/
 RUN mvn package -DskipTests
 
 # Create the runtime image
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 
-WORKDIR /app
+# Add non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Create uploads directory
+RUN mkdir -p uploads && chown -R appuser:appgroup uploads
 
 # Copy the JAR file from the build stage
 COPY --from=build /app/target/*.jar app.jar
+COPY --chown=appuser:appgroup --from=build /app/target/*.jar app.jar
 
-# Create uploads directory
-RUN mkdir -p uploads && chmod 777 uploads
+# Switch to non-root user
+USER appuser
 
-# Set the entrypoint
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s \
+    CMD wget --quiet --tries=1 --spider http://localhost:8080/actuator/health || exit 1
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
-# Expose the port
 EXPOSE 8080
